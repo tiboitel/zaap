@@ -54,9 +54,11 @@ Request body:
 ```json
 {
   "account_id": "username",
-  "hash_password": "plain-password"
+  "password_hash": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"
 }
 ```
+
+`password_hash` must be `SHA512(MD5(password))` - compute it client-side before sending.
 
 Response:
 
@@ -74,6 +76,7 @@ pytest
 
 ## Notes
 
-- Password verification uses `SHA512(MD5(password))`
+- Client must hash password before sending: `SHA512(MD5(password))`
+- Plain password must never be transmitted over the network
 - Database credentials are URL-safe in `app/db.py`
 - `.env` files and Python caches are ignored by git

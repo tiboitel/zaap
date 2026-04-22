@@ -27,17 +27,20 @@ class TestGenerateAuthTokenEndpoint:
         client = TestClient(app)
         response = client.post(
             "/generateAuthToken",
-            json={"account_id": "nonexistent", "hash_password": "wrong"},
+            json={"account_id": "nonexistent", "password_hash": "wrong"},
         )
 
         assert response.status_code == 401
         assert response.json()["detail"] == "Invalid credentials"
 
     def test_successful_auth_returns_token(self, mocker):
+        correct_hash = (
+            "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"
+        )
         mock_account = {
             "guid": 123,
             "account": "testuser",
-            "pass": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+            "pass": correct_hash,
             "zaap_token": None,
         }
         mocker.patch("app.db.get_account_by_name", return_value=mock_account)
@@ -46,7 +49,7 @@ class TestGenerateAuthTokenEndpoint:
         client = TestClient(app)
         response = client.post(
             "/generateAuthToken",
-            json={"account_id": "testuser", "hash_password": "password"},
+            json={"account_id": "testuser", "password_hash": correct_hash},
         )
 
         assert response.status_code == 200

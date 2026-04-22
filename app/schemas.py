@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class AuthRequest(BaseModel):
     account_id: str
-    hash_password: str
+    password_hash: str
 
 
 class AuthResponse(BaseModel):
