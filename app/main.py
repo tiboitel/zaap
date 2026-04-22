@@ -2,11 +2,10 @@
 
 import logging
 from fastapi import FastAPI, Request, HTTPException
-from fastapi.responses import JSONResponse
 
 from app import config
 from app.auth import authenticate
-from app.schemas import AuthRequest, AuthResponse, ErrorResponse
+from app.schemas import AuthRequest, AuthResponse
 
 logging.basicConfig(
     level=logging.INFO,
@@ -32,7 +31,9 @@ async def health():
 
 @app.post("/generateAuthToken", response_model=AuthResponse)
 async def generate_auth_token(request: AuthRequest, http_request: Request):
-    logger.info("Request from %s: account_id=%s", http_request.client.host, request.account_id)
+    logger.info(
+        "Request from %s: account_id=%s", http_request.client.host, request.account_id
+    )
     response, status_code = authenticate(request)
     if status_code == 401:
         raise HTTPException(status_code=401, detail=response.error)
@@ -41,4 +42,5 @@ async def generate_auth_token(request: AuthRequest, http_request: Request):
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host=config.API_HOST, port=config.API_PORT)

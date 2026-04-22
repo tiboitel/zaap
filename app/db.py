@@ -1,7 +1,10 @@
 """Database layer using SQLAlchemy."""
 
 import logging
+from urllib.parse import quote_plus
+
 from sqlalchemy import create_engine, text
+from sqlalchemy.engine import URL
 from sqlalchemy.orm import sessionmaker, Session
 
 from app import config
@@ -15,7 +18,14 @@ _SessionLocal = None
 def get_engine():
     global _engine
     if _engine is None:
-        url = f"mysql+pymysql://{config.USER}:{config.PASSWORD}@{config.HOST}:{config.PORT}/{config.DATABASE}"
+        url = URL.create(
+            drivername="mysql+pymysql",
+            username=quote_plus(config.USER),
+            password=quote_plus(config.PASSWORD),
+            host=config.HOST,
+            port=config.PORT,
+            database=config.DATABASE,
+        )
         logger.info("Connecting to DB: %s:%s/%s", config.HOST, config.PORT, config.DATABASE)
         _engine = create_engine(url, pool_pre_ping=True)
     return _engine

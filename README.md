@@ -24,16 +24,22 @@ API_PORT=8000
 ## Run
 
 ```bash
-zaap
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-Or directly with uvicorn:
+Or with Docker:
 
 ```bash
-uvicorn app.main:app --reload
+docker compose up --build
 ```
 
 ## Endpoints
 
 - `GET /health` — Health check
 - `POST /generateAuthToken` — Generate auth token
+
+## Testing
+
+```bash
+pytest
+```
