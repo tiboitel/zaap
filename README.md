@@ -2,6 +2,15 @@
 
 FastAPI-based auth backend for Starloco Zaap service.
 
+## Overview
+
+Zaap exposes a small authentication API backed by MySQL. It validates legacy password hashes, generates a `zaap_token`, and stores it in `world_accounts`.
+
+## Requirements
+
+- Python 3.10+
+- MySQL database with access to `world_accounts`
+
 ## Setup
 
 ```bash
@@ -38,8 +47,33 @@ docker compose up --build
 - `GET /health` — Health check
 - `POST /generateAuthToken` — Generate auth token
 
+### `POST /generateAuthToken`
+
+Request body:
+
+```json
+{
+  "account_id": "username",
+  "hash_password": "plain-password"
+}
+```
+
+Response:
+
+```json
+{
+  "zaap_token": "generated-token"
+}
+```
+
 ## Testing
 
 ```bash
 pytest
 ```
+
+## Notes
+
+- Password verification uses `SHA512(MD5(password))`
+- Database credentials are URL-safe in `app/db.py`
+- `.env` files and Python caches are ignored by git
