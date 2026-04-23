@@ -21,7 +21,7 @@ def get_engine():
         url = URL.create(
             drivername="mysql+pymysql",
             username=quote_plus(config.USER),
-            password=quote_plus(config.PASSWORD),
+            password=config.PASSWORD,
             host=config.HOST,
             port=config.PORT,
             database=config.DATABASE,
