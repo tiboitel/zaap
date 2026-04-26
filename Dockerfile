@@ -1,19 +1,17 @@
 FROM python:3.10-slim
 
-WORKDIR /app
-
-RUN pip install --no-cache-dir --upgrade pip
-
-COPY pyproject.toml ./
-COPY app/ ./app/
-RUN pip install --no-deps -e .
-
-RUN pip install fastapi uvicorn pydantic python-dotenv PyMySQL sqlalchemy
-
 RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 
-RUN useradd --create-home --shell /bin/bash appuser && chown -R appuser:appuser /app
+RUN useradd --create-home --shell /bin/bash appuser
+
+COPY --chown=appuser:appuser pyproject.toml ./
+COPY --chown=appuser:appuser app/ ./app/
+
 USER appuser
+RUN python -m venv /home/appuser/venv
+ENV PATH="/home/appuser/venv/bin:$PATH"
+RUN /home/appuser/venv/bin/pip install --no-cache-dir --upgrade pip
+RUN /home/appuser/venv/bin/pip install .
 
 EXPOSE 8000
 
