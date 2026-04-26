@@ -9,7 +9,7 @@ Zaap exposes a small authentication API backed by MySQL. It validates legacy pas
 ## Requirements
 
 - Python 3.10+
-- MySQL database with access to `world_accounts`
+- MariaDB running on `127.0.0.1:3306` with access to `world_accounts`
 
 ## Setup
 
@@ -23,12 +23,14 @@ Copy `.env.example` to `.env` and configure:
 MYSQL_HOST=127.0.0.1
 MYSQL_PORT=3306
 MYSQL_DATABASE=starloco_login
-MYSQL_USER=root
-MYSQL_PASSWORD=
+MYSQL_USER=your_mysql_user
+MYSQL_PASSWORD=your_mysql_password
 
 API_HOST=0.0.0.0
 API_PORT=8000
 ```
+
+Ensure MariaDB is running before starting the backend.
 
 ## Run
 

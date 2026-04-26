@@ -5,3 +5,10 @@ __pycache__/
 .venv/
 venv/
 env/
+*.egg-info/
+
+# OpenCode local-only files
+opencode.json
+CURRENT_TASK.md
+docs/ai/
+AGENTS.md

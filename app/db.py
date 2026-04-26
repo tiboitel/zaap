@@ -48,18 +48,17 @@ def get_account_by_name(account_id: str) -> dict | None:
             WHERE account = :account
             LIMIT 1
         """)
-        logger.debug("Query: account=%s", account_id)
         result = session.execute(query, {"account": account_id})
         row = result.fetchone()
         if row:
-            logger.info("Account found: guid=%d, user=%s", row.guid, row.user)
+            logger.info("Account found for query")
             return {
                 "guid": row.guid,
                 "account": row.user,
                 "pass": row.pwd,
                 "zaap_token": row.token,
             }
-        logger.warning("No account found for: %s", account_id)
+        logger.warning("Account not found for query")
         return None
     except Exception as e:
         logger.error("DB error: %s", e)
@@ -79,7 +78,7 @@ def update_zaap_token(guid: int, token: str) -> None:
         """)
         session.execute(query, {"token": token, "guid": guid})
         session.commit()
-        logger.info("Token updated for guid=%d", guid)
+        logger.info("Token updated")
     except Exception as e:
         logger.error("Failed to update token: %s", e)
         raise
