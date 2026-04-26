@@ -1,6 +1,17 @@
 # Zaap
 
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
 FastAPI-based auth backend for Starloco Zaap service.
+
+## Key Features
+
+- FastAPI-based REST API for legacy authentication
+- Validates SHA512(MD5(password)) hashed credentials
+- MariaDB backend with world_accounts token storage
+- Token-based rate limiting (IP + account)
+- Docker & uvicorn support
 
 ## Overview
 
